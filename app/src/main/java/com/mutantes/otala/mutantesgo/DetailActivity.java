@@ -22,7 +22,7 @@ public class DetailActivity extends AppCompatActivity {
     AbilityOperations abilityOperations;
     Button bUp;
     Button bDel;
-    int mutantId;
+    String mutantNameS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +55,7 @@ public class DetailActivity extends AppCompatActivity {
         mutantsOperations.open();
         abilityOperations.open();
 
-        Mutant mutant = mutantsOperations.getMutant(mutantId + 1);
+        Mutant mutant = mutantsOperations.getMutant(mutantNameS);
         List<Ability> abilities = abilityOperations.getAllAbilityOfMutant(mutant);
 
         for(Ability a : abilities)
@@ -75,20 +75,20 @@ public class DetailActivity extends AppCompatActivity {
         mutantsOperations.open();
         abilityOperations.open();
 
-        mutantId = 0;
+        mutantNameS = "";
         Mutant mutant = null;
         List<Ability> abilities;
         String abilitiesToScreen = "";
 
-        TextView mutantName = (TextView) findViewById(R.id.textName);
-        TextView mutantAbilities = (TextView) findViewById(R.id.abilities);
+        EditText mutantName = (EditText) findViewById(R.id.textName);
+        EditText mutantAbilities = (EditText) findViewById(R.id.abilities);
 
         Intent it = getIntent();
 
         if(it != null)
-            mutantId = it.getIntExtra("idMutant",-1);
+            mutantNameS = it.getStringExtra("nameMutant");
 
-        mutant = mutantsOperations.getMutant(mutantId + 1);
+        mutant = mutantsOperations.getMutant(mutantNameS);
 
         mutantName.setText(mutant.getName());
 
@@ -98,6 +98,8 @@ public class DetailActivity extends AppCompatActivity {
         {
             abilitiesToScreen += a.getName() + " \n";
         }
+
+        abilitiesToScreen = abilitiesToScreen.substring(0, abilitiesToScreen.length() - 1);
 
         mutantAbilities.setText(abilitiesToScreen);
 

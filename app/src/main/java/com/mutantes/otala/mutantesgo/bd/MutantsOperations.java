@@ -45,9 +45,9 @@ public class MutantsOperations {
         return newMutant;
     }
 
-    public Mutant getMutant(int id) {
+    public Mutant getMutant(String name) {
         Cursor cursor = database.rawQuery("SELECT * FROM " + SimpleBDWrapper.MUTANTS + " WHERE " +
-                SimpleBDWrapper.MUTANTS_ID + " = " + id, null);
+                SimpleBDWrapper.MUTANTS_NAME + " = '" + name + "'", null);
         cursor.moveToFirst();
         Mutant newMutant = parseMutant(cursor);
         cursor.close();

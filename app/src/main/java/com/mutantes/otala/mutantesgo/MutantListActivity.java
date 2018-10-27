@@ -53,12 +53,12 @@ public class MutantListActivity extends ListActivity {
     protected void onListItemClick(ListView l, View v, int position, long id)
     {
         super.onListItemClick(l,v,position,id);
-        nextActivity(position);
+        nextActivity(l.getAdapter().getItem(position).toString());
     }
 
-    public void nextActivity(int id) {
+    public void nextActivity(String name) {
         Intent register = new Intent(this, DetailActivity.class);
-        register.putExtra("idMutant",id);
+        register.putExtra("nameMutant", name);
         startActivity(register);
     }
 
