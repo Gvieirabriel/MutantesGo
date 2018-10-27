@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -16,8 +18,11 @@ import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
 
-    private MutantsOperations mutantsOperations;
-    private AbilityOperations abilityOperations;
+    MutantsOperations mutantsOperations;
+    AbilityOperations abilityOperations;
+    Button bUp;
+    Button bDel;
+    int mutantId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,16 +30,55 @@ public class DetailActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_detail);
 
-        int mutantId = 0;
+        mutantsOperations = new MutantsOperations(this);
+        abilityOperations = new AbilityOperations(this);
+
+        searchMutant();
+
+        bUp = (Button) findViewById(R.id.upd);
+        bDel = (Button) findViewById(R.id.delete);
+
+        bUp.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //To-Do
+            }
+        });
+
+        bDel.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                deleteMutant();
+            }
+        });
+    }
+
+    private void deleteMutant() {
+        mutantsOperations.open();
+        abilityOperations.open();
+
+        Mutant mutant = mutantsOperations.getMutant(mutantId + 1);
+        List<Ability> abilities = abilityOperations.getAllAbilityOfMutant(mutant);
+
+        for(Ability a : abilities)
+        {
+            abilityOperations.deleteAbility(a);
+        }
+
+        mutantsOperations.deleteMutant(mutant);
+        Intent register = new Intent(this, DashboardActivity.class);
+        startActivity(register);
+
+        mutantsOperations.close();
+        abilityOperations.close();
+    }
+
+    private void searchMutant() {
+        mutantsOperations.open();
+        abilityOperations.open();
+
+        mutantId = 0;
         Mutant mutant = null;
         List<Ability> abilities;
         String abilitiesToScreen = "";
-
-        mutantsOperations = new MutantsOperations(this);
-        mutantsOperations.open();
-
-        abilityOperations = new AbilityOperations(this);
-        abilityOperations.open();
 
         TextView mutantName = (TextView) findViewById(R.id.textName);
         TextView mutantAbilities = (TextView) findViewById(R.id.abilities);
@@ -44,7 +88,7 @@ public class DetailActivity extends AppCompatActivity {
         if(it != null)
             mutantId = it.getIntExtra("idMutant",-1);
 
-        mutant = mutantsOperations.getMutant(mutantId+1);
+        mutant = mutantsOperations.getMutant(mutantId + 1);
 
         mutantName.setText(mutant.getName());
 
@@ -56,5 +100,8 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         mutantAbilities.setText(abilitiesToScreen);
+
+        mutantsOperations.close();
+        abilityOperations.close();
     }
 }

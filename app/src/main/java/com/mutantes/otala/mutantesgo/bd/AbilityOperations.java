@@ -46,8 +46,8 @@ public class AbilityOperations {
         return newAbility;
     }
 
-    public void deleteAbility(Mutant mutant) {
-        long id = mutant.getId();
+    public void deleteAbility(Ability ability) {
+        long id = ability.getId();
         System.out.println("Removido id: " + id);
         database.delete(SimpleBDWrapper.ABILITY, SimpleBDWrapper.ABILITY_ID
                 + " = " + id, null);
@@ -64,7 +64,6 @@ public class AbilityOperations {
             abilityList.add(ability);
             cursor.moveToNext();
         }
-
         cursor.close();
         return abilityList;
     }
