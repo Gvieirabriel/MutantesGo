@@ -37,7 +37,7 @@ public class DetailActivity extends AppCompatActivity {
         abilityOperations.open();
 
         TextView mutantName = (TextView) findViewById(R.id.textName);
-        TextView mutantAbilities = (TextView) findViewById(R.id.abilityText);
+        TextView mutantAbilities = (TextView) findViewById(R.id.abilities);
 
         Intent it = getIntent();
 
@@ -52,7 +52,9 @@ public class DetailActivity extends AppCompatActivity {
 
         for(Ability a : abilities)
         {
-            abilitiesToScreen += a.getName() + "\n";
+            abilitiesToScreen += a.getName() + " \n";
         }
+
+        mutantAbilities.setText(abilitiesToScreen);
     }
 }
