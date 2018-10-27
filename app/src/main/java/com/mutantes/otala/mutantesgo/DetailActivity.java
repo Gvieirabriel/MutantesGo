@@ -9,12 +9,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mutantes.otala.mutantesgo.bd.AbilityOperations;
 import com.mutantes.otala.mutantesgo.bd.MutantsOperations;
 import com.mutantes.otala.mutantesgo.bean.Ability;
 import com.mutantes.otala.mutantesgo.bean.Mutant;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
@@ -60,29 +62,33 @@ public class DetailActivity extends AppCompatActivity {
 
         EditText name = (EditText) findViewById(R.id.textName);
         Mutant mutant = mutantsOperations.getMutant(mutantNameS);
-
+        String lastName = mutant.getName();
         mutant.setName(name.getText().toString());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Resultado");
         if(mutantsOperations.hasMutant(mutant) != false)
         {
-           // mutant = mutantsOperations.updateMutant(mutant);
+            mutantsOperations.updateMutant(mutant);
         }
         else
         {
-            builder.setMessage("Nome de mutante já está em uso");
-            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface arg0, int arg1) { }
-            });
+            if(!lastName.equals(mutant.getName())) {
+                builder.setMessage("Nome de mutante já está em uso");
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                    }
+                });
 
-            alert = builder.create();
-            alert.show();
-            return;
+                alert = builder.create();
+                alert.show();
+                return;
+            }
         }
 
         EditText abilitiesMultiLines  = (EditText) findViewById(R.id.abilities);
         String abilities = abilitiesMultiLines.getText().toString();
+        abilities = abilities.replaceAll(" ","");
         String[] abilitiesList;
         String delimiter = "\n";
 
@@ -96,30 +102,23 @@ public class DetailActivity extends AppCompatActivity {
 
             List<Ability> abilitylistOfMutant = abilityOperations.getAllAbilityOfMutant(mutant);
 
-            for (Ability b : abilitylistOfMutant)
-            {
-                if(!b.getName().equals(a.getName()))
-                {
-                    abilityOperations.addAbility(a);
-                }
-                else
-                {
-                    //abilityOperations.updateAbility(a);
-                }
-            }
+            List<String> abilitiesToverify = new ArrayList<>();
+
+            for(Ability ab : abilitylistOfMutant)
+                abilitiesToverify.add(ab.getName());
+
+            if(!abilitiesToverify.contains(a.getName()))
+                abilityOperations.addAbility(a);
+            //else
+            //abilityOperations.updateAbility(a);
         }
 
-        builder.setMessage("Mutante atualizado com sucesso");
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface arg0, int arg1) { }
-        });
-
-        alert = builder.create();
-        alert.show();
+        Toast.makeText(DetailActivity.this, "Mutante atualizado com sucesso", Toast.LENGTH_SHORT).show();
 
         mutantsOperations.close();
         abilityOperations.close();
 
+        this.finish();
     }
 
     private void deleteMutant() {
@@ -135,11 +134,11 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         mutantsOperations.deleteMutant(mutant);
-        Intent register = new Intent(this, DashboardActivity.class);
-        startActivity(register);
 
         mutantsOperations.close();
         abilityOperations.close();
+
+        this.finish();
     }
 
     private void searchMutant() {

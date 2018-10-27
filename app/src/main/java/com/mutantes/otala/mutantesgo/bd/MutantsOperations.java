@@ -93,4 +93,16 @@ public class MutantsOperations {
         mutant.setName(cursor.getString(1));
         return mutant;
     }
+
+    public long updateMutant(Mutant mutant) {
+        ContentValues values = new ContentValues();
+        values.put(SimpleBDWrapper.MUTANTS_NAME, mutant.getName());
+        long mutantId = database.update(SimpleBDWrapper.MUTANTS, values, SimpleBDWrapper.MUTANTS_ID + " = ?", toArgs(mutant));
+        return mutantId;
+    }
+
+    private String[] toArgs(Mutant mutant) {
+        String[] args = {Integer.toString(mutant.getId())};
+        return args;
+    }
 }

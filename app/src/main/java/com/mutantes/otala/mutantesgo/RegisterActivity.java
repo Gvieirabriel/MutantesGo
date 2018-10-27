@@ -83,15 +83,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             List<Ability> abilitylistOfMutant = abilityOperations.getAllAbilityOfMutant(mutant);
 
-            for (Ability b : abilitylistOfMutant)
-            {
-                if(!b.getName().equals(a.getName()))
-                {
-                    abilityOperations.addAbility(a);
-                }
-            }
-
-            if(abilitylistOfMutant.isEmpty())
+            if(abilitylistOfMutant.isEmpty() || !abilitylistOfMutant.contains(a))
                 abilityOperations.addAbility(a);
         }
 

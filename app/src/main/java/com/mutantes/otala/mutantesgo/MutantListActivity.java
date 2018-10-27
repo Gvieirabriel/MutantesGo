@@ -26,7 +26,10 @@ public class MutantListActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getListMutants();
+    }
 
+    private void getListMutants() {
         mutantsOperations = new MutantsOperations(this);
         mutantsOperations.open();
 
@@ -42,6 +45,14 @@ public class MutantListActivity extends ListActivity {
             displayResultList();
         else
             Toast.makeText(MutantListActivity.this, "Não tem registro de mutantes", Toast.LENGTH_SHORT).show();
+
+        mutantsOperations.close();
+    }
+
+    public void onRestart() {
+        super.onRestart();
+        setListAdapter(null);
+        getListMutants();
     }
 
     private void displayResultList() {
