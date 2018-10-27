@@ -109,8 +109,20 @@ public class DetailActivity extends AppCompatActivity {
 
             if(!abilitiesToverify.contains(a.getName()))
                 abilityOperations.addAbility(a);
-            //else
-            //abilityOperations.updateAbility(a);
+        }
+
+        List<Ability> abilitylistOfMutant = abilityOperations.getAllAbilityOfMutant(mutant);
+
+        for(Ability ability : abilitylistOfMutant)
+        {
+            List<String> abilitiesToVerify = new ArrayList<>();
+            for(String a : abilitiesList)
+            {
+                abilitiesToVerify.add(a);
+            }
+
+            if(!abilitiesToVerify.contains(ability.getName()))
+                abilityOperations.deleteAbility(ability);
         }
 
         Toast.makeText(DetailActivity.this, "Mutante atualizado com sucesso", Toast.LENGTH_SHORT).show();
