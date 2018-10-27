@@ -1,6 +1,7 @@
 package com.mutantes.otala.mutantesgo;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ public class DetailActivity extends AppCompatActivity {
     Button bUp;
     Button bDel;
     String mutantNameS;
+    AlertDialog alert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,7 @@ public class DetailActivity extends AppCompatActivity {
 
         bUp.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //To-Do
+                updateMutant();
             }
         });
 
@@ -49,6 +51,75 @@ public class DetailActivity extends AppCompatActivity {
                 deleteMutant();
             }
         });
+    }
+
+    private void updateMutant() {
+
+        mutantsOperations.open();
+        abilityOperations.open();
+
+        EditText name = (EditText) findViewById(R.id.textName);
+        Mutant mutant = mutantsOperations.getMutant(mutantNameS);
+
+        mutant.setName(name.getText().toString());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Resultado");
+        if(mutantsOperations.hasMutant(mutant) != false)
+        {
+           // mutant = mutantsOperations.updateMutant(mutant);
+        }
+        else
+        {
+            builder.setMessage("Nome de mutante já está em uso");
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface arg0, int arg1) { }
+            });
+
+            alert = builder.create();
+            alert.show();
+            return;
+        }
+
+        EditText abilitiesMultiLines  = (EditText) findViewById(R.id.abilities);
+        String abilities = abilitiesMultiLines.getText().toString();
+        String[] abilitiesList;
+        String delimiter = "\n";
+
+        abilitiesList = abilities.split(delimiter);
+
+        for(String ability : abilitiesList)
+        {
+            Ability a = new Ability();
+            a.setIdMutant(mutant.getId());
+            a.setName(ability);
+
+            List<Ability> abilitylistOfMutant = abilityOperations.getAllAbilityOfMutant(mutant);
+
+            for (Ability b : abilitylistOfMutant)
+            {
+                if(!b.getName().equals(a.getName()))
+                {
+                    abilityOperations.addAbility(a);
+                }
+                else
+                {
+                    //abilityOperations.updateAbility(a);
+                }
+            }
+        }
+
+        builder.setMessage("Mutante atualizado com sucesso");
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) { }
+        });
+
+        alert = builder.create();
+        alert.show();
+
+        mutantsOperations.close();
+        abilityOperations.close();
+
     }
 
     private void deleteMutant() {
