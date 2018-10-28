@@ -1,9 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SearchActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="42dp"
+        android:layout_marginTop="35dp"
+        android:text="Buscar por: "
+        android:textSize="24sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="58dp" />
+
+    <EditText
+        android:id="@+id/searchText"
+        android:layout_width="181dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView4"
+        android:layout_alignStart="@+id/textView4"
+        android:layout_marginTop="0dp"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/listResult"
+        android:layout_width="294dp"
+        android:layout_height="386dp"
+        android:layout_below="@+id/searchText"
+        android:layout_alignStart="@+id/textView4"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="0dp"
+        android:textAlignment="textStart"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <RadioGroup
+        android:id="@+id/radioG"
+        android:layout_width="157dp"
+        android:layout_height="44dp"
+        android:layout_alignTop="@+id/textView4"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/textView4"
+        android:checkedButton="@+id/hab">
+
+        <RadioButton
+            android:id="@+id/nom"
+            android:layout_width="163dp"
+            android:layout_height="19dp"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="Nome"
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/hab"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_weight="1"
+            android:text="Habilidade"
+            android:textSize="18sp" />
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/searchB"
+        android:layout_width="113dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/searchText"
+        android:layout_marginStart="0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_toEndOf="@+id/searchText"
+        android:text="Procurar" />
+
+</RelativeLayout>

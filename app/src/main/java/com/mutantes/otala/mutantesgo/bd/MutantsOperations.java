@@ -87,6 +87,22 @@ public class MutantsOperations {
         return mutants;
     }
 
+    public List searchMutantName(String name) {
+        List mutants = new ArrayList();
+        Cursor cursor = database.rawQuery("SELECT * FROM " + SimpleBDWrapper.MUTANTS + " WHERE " +
+                SimpleBDWrapper.MUTANTS_NAME + " like  '%" + name + "%'", null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Mutant mutant = parseMutant(cursor);
+            mutants.add(mutant);
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        return mutants;
+    }
+
     private Mutant parseMutant(Cursor cursor) {
         Mutant mutant = new Mutant();
         mutant.setId(cursor.getInt(0));
