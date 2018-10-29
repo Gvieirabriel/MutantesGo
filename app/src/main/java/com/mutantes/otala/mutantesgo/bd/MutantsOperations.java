@@ -121,4 +121,23 @@ public class MutantsOperations {
         String[] args = {Integer.toString(mutant.getId())};
         return args;
     }
+
+    public List<Mutant> searchMutantAbility(String ability) {
+        List mutants = new ArrayList();
+        Cursor cursor = database.rawQuery("SELECT * FROM " + SimpleBDWrapper.MUTANTS + " JOIN "
+                + SimpleBDWrapper.ABILITY + "  ON " + SimpleBDWrapper.ABILITY + "." +
+                SimpleBDWrapper.MUTANTS_ABILITIES + " = " + SimpleBDWrapper.MUTANTS + "." +
+                SimpleBDWrapper.MUTANTS_ID  + " WHERE " + SimpleBDWrapper.ABILITY + "." +
+                SimpleBDWrapper.ABILITY_NAME + " like  '%" + ability + "%'", null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Mutant mutant = parseMutant(cursor);
+            mutants.add(mutant);
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        return mutants;
+    }
 }

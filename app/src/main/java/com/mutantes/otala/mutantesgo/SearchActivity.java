@@ -54,7 +54,7 @@ public class SearchActivity extends AppCompatActivity {
         abilityOperations.open();
         String resultToScreen = "";
         textToSearch = findViewById(R.id.searchText);
-        List<Mutant> mutantsResult = mutantsOperations.searchMutantName(textToSearch.getText().toString());
+        List<Mutant> mutantsResult = mutantsOperations.searchMutantAbility(textToSearch.getText().toString());
         if (!mutantsResult.isEmpty()) {
             for (Mutant m : mutantsResult) {
                 resultToScreen += m.getName() + " \n";
